@@ -1,0 +1,33 @@
+server:
+  port: ${service_port:9001}
+spring:
+  application: 
+    name: config
+   
+# Actuator endpoints
+management.endpoints.web.exposure.include: health, metrics, bus-refresh
+
+---
+spring:
+  cloud:
+    config:
+      server:        
+        git:
+          uri: https://${git_host:github.com}:${git_port:443}/${git_org:sc-hklee}/${git_repo:configmng.git}
+          username: ${git_id:happycloudpak}
+          password: ${git_pw:happy@cloud0}                            
+          search-paths: /*                       #base directory to search profiles
+          default-label: ${git_branch:main}      #git branch
+    # enable config monitor      
+    bus:
+      enabled: true
+
+  rabbitmq:
+    host: ${mq_host:169.56.84.41}
+    port: ${mq_port:31060}
+    username: ${mq_id:guest}
+    password: ${mq_pw:guest}
+  
+  main:
+    allow-bean-definition-overriding: true  
+  
